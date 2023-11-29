@@ -1,6 +1,7 @@
 package builtins
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -67,4 +68,44 @@ func TestListFiles(t *testing.T) {
 		t.Fatalf("Failed to list files with human-readable sizes: %v", err)
 	}
 
+}
+
+func TestPrintFileInfo(t *testing.T) {
+	// Create a temporary file for testing
+	tempFile, err := ioutil.TempFile("", "testfile")
+	if err != nil {
+		t.Fatalf("Failed to create temporary file: %v", err)
+	}
+	defer os.Remove(tempFile.Name())
+
+	// Get the file info
+	fileInfo, err := tempFile.Stat()
+	if err != nil {
+		t.Fatalf("Failed to get file info: %v", err)
+	}
+
+	// Call the printFileInfo function
+	printFileInfo(fileInfo, tempFile.Name(), true)
+}
+
+func TestFormatSize(t *testing.T) {
+	testCases := []struct {
+		size         int64
+		expectedSize string
+	}{
+		{0, "0 B"},
+		{1023, "1023 B"},
+		{1024, "1.0 KB"},
+		{1048576, "1.0 MB"},
+		{1073741824, "1.0 GB"},
+		{1099511627776, "1.0 TB"},
+		{1125899906842624, "1.0 PB"},
+	}
+
+	for _, tc := range testCases {
+		actualSize := formatSize(tc.size)
+		if actualSize != tc.expectedSize {
+			t.Errorf("Unexpected size.\nInput: %d\nExpected: %s\nActual: %s", tc.size, tc.expectedSize, actualSize)
+		}
+	}
 }
