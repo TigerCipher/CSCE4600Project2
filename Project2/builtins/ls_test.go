@@ -61,6 +61,12 @@ func TestListFiles(t *testing.T) {
 		t.Fatalf("Failed to list files sorted by size: %v", err)
 	}
 
+	// Test listing files sorted by time
+	err = ListFiles("-t", tempDir)
+	if err != nil {
+		t.Fatalf("Failed to list files sorted by size: %v", err)
+	}
+
 	// Test listing files with human-readable sizes
 	err = ListFiles("-h", "-l", tempDir)
 	if err != nil {

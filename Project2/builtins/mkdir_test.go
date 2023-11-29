@@ -17,8 +17,12 @@ func TestMakeDirectory(t *testing.T) {
 	// Test creating a new directory
 	dirName := "newdir"
 	err = MakeDirectory(dirName)
-	if err != nil {
+	if err == ErrInvalidArgCount {
 		t.Fatalf("Failed to create directory: %v", err)
+	} else if err != nil {
+		t.Fatalf("Failed to create directory: %v", err)
+	} else {
+		defer os.Remove(dirName)
 	}
 
 	// Check if the directory exists
