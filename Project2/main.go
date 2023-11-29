@@ -9,7 +9,7 @@ import (
 	"os/user"
 	"strings"
 
-	"github.com/TigerCipher/CSCE4600Project2/builtins"
+	"github.com/TigerCipher/CSCE4600Project2/Project2/builtins"
 )
 
 func main() {
