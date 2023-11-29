@@ -84,6 +84,8 @@ func handleInput(w io.Writer, input string, exit chan<- struct{}) error {
 		return builtins.Remove(args...)
 	case "ls":
 		return builtins.ListFiles(args...)
+	case "echo":
+		return builtins.Echo(args...)
 	case "exit":
 		exit <- struct{}{}
 		return nil
