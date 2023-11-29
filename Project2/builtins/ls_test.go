@@ -1,7 +1,6 @@
 package builtins
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -72,7 +71,7 @@ func TestListFiles(t *testing.T) {
 
 func TestPrintFileInfo(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile, err := ioutil.TempFile("", "testfile")
+	tempFile, err := os.CreateTemp("", "testfile")
 	if err != nil {
 		t.Fatalf("Failed to create temporary file: %v", err)
 	}
