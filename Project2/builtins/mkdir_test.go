@@ -40,11 +40,12 @@ func TestMakeDirectory(t *testing.T) {
 
 	// Test case 4: Verify error handling
 	expectedErr := errors.New("mkdir testdir: Cannot create a file when that file already exists.")
+	expectedErrUnix := errors.New("mkdir testdir: file exists")
 	mockMkdir = func(path string, perm os.FileMode) error {
 		return expectedErr
 	}
 	err = MakeDirectory("testdir")
-	if err.Error() != expectedErr.Error() {
+	if err.Error() != expectedErr.Error() && err.Error() != expectedErrUnix.Error() {
 		t.Errorf("MakeDirectory did not return the expected error. Expected: %v, Got: %v", expectedErr, err)
 	}
 	mockMkdir = nil
