@@ -33,7 +33,8 @@ func TestCat(t *testing.T) {
 
 	err = Cat(&output, "restricted.txt")
 	errOnWin = "failed to read file"
-	if err.Error() != errOnWin {
+	errOnLinux = "failed to read file: open restricted.txt: permission denied"
+	if err.Error() != errOnWin && err.Error() != errOnLinux {
 		t.Errorf("Cat failed to return the correct error when reading a file. Expected: %q, Got: %q", errOnWin, err.Error())
 	}
 
