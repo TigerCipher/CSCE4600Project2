@@ -14,6 +14,11 @@ func TestListFiles(t *testing.T) {
 	}
 	defer os.Remove(tempDir)
 
+	err = ListFiles("-dfg")
+	if err == nil {
+		t.Fatalf("Expected error when listing files with invalid flag")
+	}
+
 	// Create some test files
 	testFiles := []string{"file1.txt", "file2.txt", "file3.txt"}
 	for _, filename := range testFiles {

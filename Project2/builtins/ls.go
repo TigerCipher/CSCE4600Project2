@@ -21,7 +21,10 @@ func ListFiles(args ...string) error {
 	listDirectories := fs.Bool("d", false, "List directories themselves")
 
 	// Parse the provided flags
-	fs.Parse(args)
+	err := fs.Parse(args)
+	if err != nil {
+		return err
+	}
 
 	dirPath := "."
 	if len(fs.Args()) > 0 {
