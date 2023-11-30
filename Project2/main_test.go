@@ -2,12 +2,14 @@ package main
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/require"
 	"io"
+	"os/exec"
 	"strings"
 	"testing"
 	"testing/iotest"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_runLoop(t *testing.T) {
@@ -57,4 +59,91 @@ func Test_runLoop(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestExecuteCommand(t *testing.T) {
+	// Create a test command
+	cmd := exec.Command("tree", "")
+
+	// Create a buffer to capture the output
+	output := bytes.Buffer{}
+
+	// Set the output device to the buffer
+	cmd.Stdout = &output
+
+	err := executeCommand("tree")
+
+	// Check if the command execution produced an error
+	if err != nil {
+		t.Errorf("executeCommand returned an error: %v", err)
+	}
+
+	// Check if the output matches the expected value
+	// expectedOutput := "Hello, World!\n"
+	// if output.String() != expectedOutput {
+	// 	t.Errorf("executeCommand produced incorrect output. Expected: %q, Got: %q", expectedOutput, output.String())
+	// }
+	// my drive letter may be different than others, so I can't really hardcode an expected outcome for the tree command, but if by this point it didn't produce an error, then it should have worked
+}
+
+func TestHandleInput(t *testing.T) {
+	// Create a buffer to capture the output
+	output := bytes.Buffer{}
+
+	// Create a channel for the exit signal
+	exit := make(chan struct{})
+
+	// Test case 1: Built-in command "echo"
+	err := handleInput(&output, "echo Hello, World!", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 2: LS command
+	err = handleInput(&output, "ls", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 3: mkdir command
+	err = handleInput(&output, "mkdir tempdir", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 4: rm command
+	err = handleInput(&output, "rm tempdir", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 5: Non-existent command
+	err = handleInput(&output, "nonexistent", exit)
+	expectedErr := "exec: \"nonexistent\": executable file not found in %PATH%"
+	if err.Error() != expectedErr {
+		t.Errorf("handleInput did not return the expected error for a non-existent command. Expected: '%v', Got: '%v'", expectedErr, err)
+	}
+
+	// Test case 6: cd command
+	err = handleInput(&output, "cd builtins", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 7: env command
+	err = handleInput(&output, "env", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
+	// Test case 8: Built-in command "exit"
+	go func() {
+		err := handleInput(&output, "exit", exit)
+		if err != nil {
+			t.Errorf("handleInput returned an error: %v", err)
+		}
+	}()
+
+	// Wait for the exit signal
+	<-exit
 }

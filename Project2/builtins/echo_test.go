@@ -29,7 +29,7 @@ func TestEcho(t *testing.T) {
 	}()
 
 	// Test case 1: Echoing arguments
-	err = Echo("Hello", "World")
+	err = Echo(writer, "Hello", "World")
 	if err != nil {
 		t.Errorf("Echo returned an error: %v", err)
 	}
@@ -47,7 +47,7 @@ func TestEcho(t *testing.T) {
 
 	// Test case 2: Echoing environment variable
 	os.Setenv("GREETING", "Hello")
-	err = Echo("$GREETING", "World")
+	err = Echo(writer, "$GREETING", "World")
 	if err != nil {
 		t.Errorf("Echo returned an error: %v", err)
 	}

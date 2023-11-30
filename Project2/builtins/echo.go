@@ -3,11 +3,12 @@ package builtins
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
 
-func Echo(args ...string) error {
+func Echo(w io.Writer, args ...string) error {
 	if len(args) < 1 {
 		return ErrInvalidArgCount
 	}
@@ -24,15 +25,15 @@ func Echo(args ...string) error {
 			value := os.Getenv(envVar)
 
 			// Print the environment variable value
-			fmt.Print(value + " ")
+			fmt.Print(w, value+" ")
 		} else {
 			// Print the argument
-			fmt.Print(arg + " ")
+			fmt.Print(w, arg+" ")
 		}
 	}
 
 	// Print the end character
-	fmt.Print("\n")
+	fmt.Print(w, "\n")
 
 	return nil
 }
