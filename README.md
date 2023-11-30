@@ -12,7 +12,7 @@
 ### Commands I implemented
 
 1. echo
-   1. supports printing environment variables in a linux fashin, i.e `echo $VAR`
+   1. supports printing environment variables in a linux fashion, i.e `echo $VAR`
 2. ls
    1. Supports the following flags
       1. -R    Recursively list files and directories
