@@ -21,10 +21,7 @@ func ListFiles(args ...string) error {
 	listDirectories := fs.Bool("d", false, "List directories themselves")
 
 	// Parse the provided flags
-	err := fs.Parse(args)
-	if err != nil {
-		return err
-	}
+	fs.Parse(args)
 
 	dirPath := "."
 	if len(fs.Args()) > 0 {
@@ -39,26 +36,14 @@ func ListFiles(args ...string) error {
 	// Apply sorting if required
 	if *sortByTime {
 		sort.Slice(files, func(i, j int) bool {
-			fileInfoI, err := files[i].Info()
-			if err != nil {
-				return false
-			}
-			fileInfoJ, err := files[j].Info()
-			if err != nil {
-				return false
-			}
+			fileInfoI, _ := files[i].Info()
+			fileInfoJ, _ := files[j].Info()
 			return fileInfoI.ModTime().After(fileInfoJ.ModTime())
 		})
 	} else if *sortBySize {
 		sort.Slice(files, func(i, j int) bool {
-			fileInfoI, err := files[i].Info()
-			if err != nil {
-				return false
-			}
-			fileInfoJ, err := files[j].Info()
-			if err != nil {
-				return false
-			}
+			fileInfoI, _ := files[i].Info()
+			fileInfoJ, _ := files[j].Info()
 			return fileInfoI.Size() > fileInfoJ.Size()
 		})
 	}
