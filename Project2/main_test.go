@@ -120,8 +120,9 @@ func TestHandleInput(t *testing.T) {
 	// Test case 5: Non-existent command
 	err = handleInput(&output, "nonexistent", exit)
 	expectedErr := "exec: \"nonexistent\": executable file not found in %PATH%"
-	if err.Error() != expectedErr {
-		t.Errorf("handleInput did not return the expected error for a non-existent command. Expected: '%v', Got: '%v'", expectedErr, err)
+	exectedErrOnUnix := "exec: \"nonexistent\": executable file not found in $PATH"
+	if err.Error() != expectedErr || err.Error() != exectedErrOnUnix {
+		t.Errorf("handleInput did not return the expected error for a non-existent command. Expected: '%v', Got: '%v' (or if on linux then expected: '%v')", expectedErr, err, exectedErrOnUnix)
 	}
 
 	// Test case 6: cd command
