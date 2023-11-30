@@ -118,7 +118,7 @@ func TestHandleInput(t *testing.T) {
 	}
 
 	// Test case 5: rm command
-	err = handleInput(&output, "cat README.md", exit)
+	err = handleInput(&output, "cat main.go", exit)
 	if err != nil {
 		t.Errorf("handleInput returned an error: %v", err)
 	}
