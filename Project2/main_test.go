@@ -117,6 +117,12 @@ func TestHandleInput(t *testing.T) {
 		t.Errorf("handleInput returned an error: %v", err)
 	}
 
+	// Test case 5: rm command
+	err = handleInput(&output, "cat readme.md", exit)
+	if err != nil {
+		t.Errorf("handleInput returned an error: %v", err)
+	}
+
 	// Test case 5: Non-existent command
 	/*	err = handleInput(&output, "nonexistent", exit)
 		expectedErr := "exec: \"nonexistent\": executable file not found in %PATH%"
