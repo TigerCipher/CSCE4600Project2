@@ -1,5 +1,5 @@
 # CSCE4600
-![Coverage](https://img.shields.io/badge/Coverage-92.5%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-92.6%25-brightgreen)
 
 To run project 2:
 1. `cd Project2` if not already in the directory
