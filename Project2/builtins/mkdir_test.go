@@ -10,13 +10,6 @@ import (
 
 var mockMkdir func(string, os.FileMode) error
 
-func mockMkdirFunc(path string, perm os.FileMode) error {
-	if mockMkdir != nil {
-		return mockMkdir(path, perm)
-	}
-	return nil
-}
-
 func TestMakeDirectory(t *testing.T) {
 	// Test case 1: Single argument
 	err := MakeDirectory("testdir")
