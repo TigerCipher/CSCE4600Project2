@@ -15,6 +15,12 @@ func TestRemove(t *testing.T) {
 	file.Close()
 	defer os.Remove(tempFile)
 
+	// test not enough args
+	err = Remove()
+	if err != ErrInvalidArgCount {
+		t.Fatalf("Expected ErrInvalidArgCount, got %v", err)
+	}
+
 	// Test removing the file
 	err = Remove(tempFile)
 	if err != nil {

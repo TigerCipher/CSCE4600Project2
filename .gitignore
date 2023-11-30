@@ -21,3 +21,5 @@
 go.work
 Project1/fcfs_test.txt
 Project2/coverage.html
+Project2/cover.html
+*.html

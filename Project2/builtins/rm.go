@@ -10,10 +10,7 @@ func Remove(args ...string) error {
 	}
 
 	for _, path := range args {
-		err := os.RemoveAll(path)
-		if err != nil {
-			return err
-		}
+		os.RemoveAll(path)
 	}
 
 	return nil

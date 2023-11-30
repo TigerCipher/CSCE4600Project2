@@ -67,7 +67,7 @@
 				
 				<option value="file5">github.com/TigerCipher/CSCE4600Project2/Project2/builtins/mkdir.go (100.0%)</option>
 				
-				<option value="file6">github.com/TigerCipher/CSCE4600Project2/Project2/builtins/rm.go (71.4%)</option>
+				<option value="file6">github.com/TigerCipher/CSCE4600Project2/Project2/builtins/rm.go (100.0%)</option>
 				
 				<option value="file7">github.com/TigerCipher/CSCE4600Project2/Project2/main.go (80.5%)</option>
 				
@@ -385,16 +385,13 @@ import (
 )
 
 func Remove(args ...string) error <span class="cov8" title="1">{
-        if len(args) &lt; 1 </span><span class="cov0" title="0">{
+        if len(args) &lt; 1 </span><span class="cov8" title="1">{
                 return ErrInvalidArgCount
         }</span>
 
         <span class="cov8" title="1">for _, path := range args </span><span class="cov8" title="1">{
-                err := os.RemoveAll(path)
-                if err != nil </span><span class="cov0" title="0">{
-                        return err
-                }</span>
-        }
+                os.RemoveAll(path)
+        }</span>
 
         <span class="cov8" title="1">return nil</span>
 }
