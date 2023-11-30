@@ -28,6 +28,12 @@ func TestEcho(t *testing.T) {
 		_, _ = io.Copy(&buf, reader)
 	}()
 
+	// test not enough args
+	err = Echo(writer)
+	if err != ErrInvalidArgCount {
+		t.Fatalf("Expected ErrInvalidArgCount, got %v", err)
+	}
+
 	// Test case 1: Echoing arguments
 	err = Echo(writer, "Hello", "World")
 	if err != nil {
