@@ -10,8 +10,45 @@ func TestCat(t *testing.T) {
 	// Create a buffer to capture the output
 	output := bytes.Buffer{}
 
+	// fail to open file
+	err := Cat(&output, "nonexistentfile")
+	errOnWin := "failed to open file: open nonexistentfile: The system cannot find the file specified."
+	errOnLinux := "failed to open file: open nonexistentfile: no such file or directory"
+	if err.Error() != errOnWin && err.Error() != errOnLinux {
+		t.Errorf("Cat failed to return the correct error when opening a nonexistent file. Expected: %q, Got: %q", errOnWin, err.Error())
+	}
+
+	// Fail to read file
+
+	file, permErr := os.Create("restricted.txt")
+	if permErr != nil {
+		t.Fatalf("Failed to create temporary file: %v", permErr)
+	}
+	file.Close()
+
+	permErr = os.Chmod("restricted.txt", 0000)
+	if permErr != nil {
+		t.Fatalf("Failed to change permissions on temporary file: %v", permErr)
+	}
+
+	err = Cat(&output, "restricted.txt")
+	errOnWin = "failed to read file"
+	if err.Error() != errOnWin {
+		t.Errorf("Cat failed to return the correct error when reading a file. Expected: %q, Got: %q", errOnWin, err.Error())
+	}
+
+	permErr = os.Chmod("restricted.txt", 0755)
+	if permErr != nil {
+		t.Fatalf("Failed to change permissions on temporary file: %v", permErr)
+	}
+
+	permErr = os.Remove("restricted.txt")
+	if permErr != nil {
+		t.Fatalf("Failed to remove temporary file: %v", permErr)
+	}
+
 	// Test case 1: Single file
-	err := Cat(&output, "cd.go")
+	err = Cat(&output, "cd.go")
 	if err != nil {
 		t.Errorf("Cat returned an error: %v", err)
 	}

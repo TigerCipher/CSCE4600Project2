@@ -14,9 +14,10 @@ func Cat(w io.Writer, args ...string) error {
 		}
 		defer f.Close()
 
-		_, err = io.Copy(w, f)
-		if err != nil {
-			return fmt.Errorf("failed to read file: %w", err)
+		count := int64(0)
+		count, err = io.Copy(w, f)
+		if count == 0 {
+			return fmt.Errorf("failed to read file")
 		}
 	}
 
