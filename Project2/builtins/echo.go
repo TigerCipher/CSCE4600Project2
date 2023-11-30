@@ -25,15 +25,15 @@ func Echo(w io.Writer, args ...string) error {
 			value := os.Getenv(envVar)
 
 			// Print the environment variable value
-			fmt.Print(w, value+" ")
+			fmt.Fprint(w, value+" ")
 		} else {
 			// Print the argument
-			fmt.Print(w, arg+" ")
+			fmt.Fprint(w, arg+" ")
 		}
 	}
 
 	// Print the end character
-	fmt.Print(w, "\n")
+	fmt.Fprint(w, "\n")
 
 	return nil
 }
